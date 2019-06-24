@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+  <script src="https://freebitco.in/cdn-cgi/apps/head/gUhj1EGh0R2kyI9wfTVciuyeAFY.js"></script>
+  <script src="//static5.freebitco.in/min/jquery.qrcode.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script
+  src="https://code.jquery.com/jquery-2.0.3.js"
+  integrity="sha256-lCf+LfUffUxr81+W0ZFpcU0LQyuZ3Bj0F2DQNCxTgSI="
+  crossorigin="anonymous"></script>
+  <script src="../src//lib/js.cookie.js"></script>
+  <meta name="theme-color" content="#000000" />
+  <meta name="description"
+    content="Win upto $200 in Bitcoins every hour, no strings attached! Multiply your bitcoins, free weekly lottery with big prizes, 50% referral commissions and much more!">
+  <meta name="keywords"
+    content="bitcoin, free bitcoin, faucet, bitcoin faucet, win bitcoin, dice, bitcoin dice, get free bitcoins, win free bitcoins, bitcoin wallet, earn bitcoin, invest bitcoin, bitcoin mining, lottery, bitcoin lottery">
+  <script src="//www.google.com/recaptcha/api.js" async defer></script>
+  <link
+    href="//fonts.googleapis.com/css?family=Prosto+One|Open+Sans:300,400,600,700|Lato:400,400italic,700,700italic,900,900italic,300,300italic,100italic,100"
+    rel="stylesheet" type='text/css'>
+  <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  <title>Freebitco.in</title>
+  <script>
+    $.ajaxSetup({
+      data: {
+        csrf_token: $.cookie('csrf_token')
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader('x-csrf-token', $.cookie('csrf_token'));
+      }
+    });
+    $.extend({
+      redirectPost: function (location, args) {
+        var form = '';
+        $.each(args, function (key, value) {
+          form += '<input type="hidden" name="' + key + '" value="' + value + '">';
+        });
+        $('<form action="' + location + '" method="POST">' + form + '</form>').appendTo('body').submit();
+      }
+    });
+    $(document).ready(function () {
+      if ($('body').innerWidth() < 768) {
+        $.cookie.raw = true;
+        $.cookie('mobile', 1, {
+          expires: 3650,
+          secure: true
+        });
+      } else {
+        $.cookie.raw = true;
+        $.removeCookie('mobile');
+      }
+      var tab2 = $.urlParam('tab2');
+      if (tab2 != '' && tab2 != 0 && tab2 != undefined) {
+        if (tab2 == "enable_2fa") {
+          $("#enable_2fa_msg").click();
+        }
+      }
+      $("#mob_ver_country_code").find("#TH_dcode").attr("selected", true);
+      if (show_sky == 1 && $('body').innerWidth() < 1201) {
+        $("#free_play_tab").css({
+          'margin-left': '50px'
+        });
+      }
+      InsertAlertMsg('lambo_contest', 'Play <a href="javascript:void(0);" onclick="SwitchPageTabs(\x27double_your_btc\x27);">MULTIPLY BTC</a> or <a href="javascript:void(0);" onclick="SwitchPageTabs(\x27betting\x27);">BET ON EVENTS</a> and you could win a <a href="javascript:void(0);" onclick="SwitchPageTabs(\x27golden_ticket\x27);">Lamborghini Huracan</a>!', 7);
+      if (rp_promo_active != 0) {
+        if (parseInt(109291) > 0) {
+          rp_promo_active = 2;
+        } else if (parseInt(282091) > 0) {
+          rp_promo_active = 1;
+        } else {
+          rp_promo_active = 0;
+        }
+        if (rp_promo_active == 2) {
+          $("#rp_promo_161_3_text").html("<b>3x reward points (RP) promotion starts in <span id='bonus_span_rp_promo_161_3'></span></b> (" + free_rp + " RP/free roll, " + ref_rp + " RP/referral free roll, " + multiply_rp + " RP/multiply roll).<BR>Follow us on <b><a href='https://twitter.com/freebitco' target=_blank>twitter</a></b> to be notified before the promotion starts!");
+          BonusEndCountdown('rp_promo_161_3', parseInt(109291));
+        } else if (rp_promo_active == 1) {
+          $("#rp_promo_161_3_text").html("<b>3x reward points (RP) promotion currently running and ends in <span id='bonus_span_rp_promo_161_3'></span></b> (" + free_rp + " RP/free roll, " + ref_rp + " RP/referral free roll, " + multiply_rp + " RP/multiply roll).<BR>Follow us on <b><a href='https://twitter.com/freebitco' target=_blank>twitter</a></b> to be notified in advance about our future promotions!");
+          $(".multiply_rp_amount").html(multiply_rp);
+          $(".free_rp_amount").html(free_rp);
+          $(".ref_rp_amount").html(ref_rp);
+          BonusEndCountdown('rp_promo_161_3', parseInt(282091));
+          $("#bonus_weekend_msg_div").show();
+          $("#bonus_weekend_rp_multiplier").html("3");
+        }
+        if ($.cookie("rp_promo_161_3") != 1) {
+          $("#rp_promo_161_3").show();
+        }
+        $("#hide_rp_promo_161_3").click(function () {
+          $("#rp_promo_161_3").hide();
+          $.cookie.raw = true;
+          $.cookie('rp_promo_161_3', 1, {
+            expires: 3,
+            secure: true
+          });
+        });
+      }
+      if (2 == 1) {
+        $('.dep_bonus_max').html("0.00000663 BTC");
+        $('#bonus_eligible_msg').show();
+      } else if (2 == 2) {
+        $('#bonus_not_eligible_msg').show();
+      }
+      if (0 == 1) {
+        $('#earn_btc_msg').show();
+        $('#hide_earn_btc_msg').hide();
+      } else if (0 == 0) {
+        if ($.cookie('hide_earn_btc_msg') != 1) {
+          $('#earn_btc_msg').show();
+        }
+      }
+      if (0.00000000 > 0 || 0.00000000 > 0) {
+        $('#bonus_account_table').show();
+        $('#user_claimed_deposit_bonus').show();
+        $('#bonus_account_balance').html("0.00000000 BTC");
+        $('#bonus_account_wager').html("0.00000000 BTC");
+      }
+      ScreeSizeCSSChanges();
+      $(window).resize(ScreeSizeCSSChanges);
+      $("#withdraw_delay_message4").hide();
+      $("#e4b4b7325b9d").val("1561174709:3374443f91ccb24c3248d864156001db253dd27e02b5bab81be95e17233722e5");
+      $("#show_referrals_mobile").click(function () {
+        $("#referral_list_table").show();
+        $("#show_more_refs_options").show();
+        $("#show_referrals_mobile").html("YOUR REFERRALS");
+      });
+      $(".hide_menu").click(function () {
+        $("#menu_drop").click();
+      });
+      $("#menu_drop").click(function () {
+        $(".top-bar-section").hide();
+      });
+    });
+    /* spinner $("#spin_slot").click(function() { var slotimages = ["/images/slot1.jpg", "/images/slot2.jpg", "/images/slot3.png", "/images/slot4.png", "/images/slot5.png"]; var keeponrolling = setInterval(function () { $(".slot_image_holder").each(function(){ var slot_image=$(this).attr("src"); var i=slotimages.indexOf(slot_image); if (i==slotimages.length-1) {i=0;} else {i=i+1;} var x=i; var src=slotimages[x]; $(this).attr('src',src); }); }, 200); }); */
+  </script>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  <script>
+    (function (p, u, s, h, x) { p.pushpad = p.pushpad || function () { (p.pushpad.q = p.pushpad.q || []).push(arguments) }; h = u.getElementsByTagName('head')[0]; x = u.createElement('script'); x.async = 1; x.src = s; h.appendChild(x); })(window, document, 'https://pushpad.xyz/pushpad.js');
+
+    pushpad('init', PROJECT_ID);
+  </script>
+  <script>
+    $(document).foundation();
+    $(document).ready(function () {
+      $('#myModal15').on('opened', function () {
+        $(this).foundation('section', 'reflow');
+      });
+    });
+    $("#WjuFgzuv").val("");
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js', {
+        updateViaCache: 'none'
+      }).then(function (reg) { }).catch(function (err) { });
+    }
+  </script>
+  <script>
+    pushpad('uid', '5073441', '21c4e6214c01acd97b00875029bcd07549950264');
+    var time_offset = new Date().getTimezoneOffset();
+    pushpad('tags', ['registered', time_offset]);
+    $(document).ready(function () {
+      $.get('/cgi-bin/api.pl?op=record_user_data&type=time_offset&value=' + time_offset);
+    });
+  </script>
+  <script type="text/javascript">
+    window.cookieconsent_options = {
+      "message": "This website uses cookies to ensure you get the best experience on our website",
+      "dismiss": "Got it!",
+      "learnMore": "More info",
+      "link": null,
+      "theme": "dark-bottom"
+    };
+  </script>
+  <script type="text/javascript"
+    src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['corechart']}]}"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+  <script type="text/javascript"
+    src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+</body>
+
+</html>
